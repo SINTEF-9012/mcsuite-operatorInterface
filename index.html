@@ -40,10 +40,26 @@
         .recordrtc option[disabled] {
             display: none;
         }
+		/* place fullscreen control on right side of the player */
+		.video-js .vjs-control.vjs-fullscreen-control {
+			position: absolute;
+			right: 0;
+		}
+
+		/* make sure the custom controls are always visible because
+		   the plugin hides and replace the video.js native mobile
+		   controls */
+		.vjs-using-native-controls .vjs-control-bar {
+			display: flex !important;
+		}
     </style>
+	<link href="https://vjs.zencdn.net/5.9.2/video-js.min.css" rel="stylesheet">
+	<script src="https://vjs.zencdn.net/5.9.2/video.min.js"></script>
 	<script src="https://cdn.webrtc-experiment.com/RecordRTC.js"></script>
     <script src="https://cdn.webrtc-experiment.com/gif-recorder.js"></script>
     <script src="https://cdn.webrtc-experiment.com/getScreenId.js"></script>
+	
+	<script src="./js/videojs.record.min.js"></script>
 	<!-- for Edige/FF/Chrome/Opera/etc. getUserMedia support -->
     <script src="https://cdn.webrtc-experiment.com/gumadapter.js"></script>
 
@@ -163,61 +179,43 @@
 			  <div id="sound" class="tab-pane fade">
 				<p>
 				<div>
-       <article>
-        <section class="experiment recordrtc">
-                <select class="recording-media">
-                    <option value="record-video">Video</option>
-                    <option value="record-audio">Audio</option>
-                    <option value="record-screen">Screen</option>
-                </select>
-                
-                into
-                <select class="media-container-format">
-                    <option>WebM</option>
-                    <option disabled>Mp4</option>
-                    <option disabled>WAV</option>
-                    <option disabled>Ogg</option>
-                    <option>Gif</option>
-                </select>
-                
-                <button id="control" class="btn btn-danger">Start Recording</button>
-            <br>
-            <div>
-                <button class="btn btn-info" id="save-to-disk">Save To Disk</button>
-                <button class="btn btn-info" id="open-new-tab">Open New Tab</button>
-                <button class="btn btn-info" id="upload-to-server">Upload To Server</button>
-            </div>
-            
-            <br>
-
-            <video controls muted></video>
-        </section>
-		</article>
+					<video id="myVideo" class="video-js vjs-default-skin"></video>
 				</div>
-		<!-- All this is from: https://www.webrtc-experiment.com/RecordRTC/PHP/ -->
-		 <script>
-            (function() {
-                var params = {},
-                    r = /([^&=]+)=?([^&]*)/g;
+<script>
+var player = videojs("myVideo",
+{
+    controls: true,
+    width: 320,
+    height: 240,
+    plugins: {
+        record: {
+            audio: true,
+            video: true,
+            maxLength: 10,
+            debug: true
+        }
+    }
+});
+// error handling
+player.on('deviceError', function()
+{
+    console.log('device error:', player.deviceErrorCode);
+});
 
-                function d(s) {
-                    return decodeURIComponent(s.replace(/\+/g, ' '));
-                }
+// user clicked the record button and started recording
+player.on('startRecord', function()
+{
+    console.log('started recording!');
+});
 
-                var match, search = window.location.search;
-                while (match = r.exec(search.substring(1))) {
-                    params[d(match[1])] = d(match[2]);
-
-                    if(d(match[2]) === 'true' || d(match[2]) === 'false') {
-                        params[d(match[1])] = d(match[2]) === 'true' ? true : false;
-                    }
-                }
-
-                window.params = params;
-            })();
-        </script>			 
-		<script src="js/RecordRTC_MC_Suite.js"></script>
-
+// user completed recording and stream is available
+player.on('finishRecord', function()
+{
+    // the blob object contains the recorded data that
+    // can be downloaded by the user, stored on server etc.
+    console.log('finished recording: ', player.recordedData);
+});
+</script>
 				</p>
 			  </div>
 			</div>
