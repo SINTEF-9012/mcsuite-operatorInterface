@@ -46,6 +46,7 @@
     <script src="https://cdn.webrtc-experiment.com/getScreenId.js"></script>
 	<!-- for Edige/FF/Chrome/Opera/etc. getUserMedia support -->
     <script src="https://cdn.webrtc-experiment.com/gumadapter.js"></script>
+
   </head>
 
   <body>
@@ -92,19 +93,19 @@
              <h2>Publish an observation: </h2>
 
 
-            <form role = "form">
+            <form role="form">
 
             <div class="form-group">
             <label class="control-label">Importance Level:</label>
             <div class="btn-group" data-toggle="buttons">
                 <label class="btn btn-success">
-                    <input type="radio" value="1" /> Low
+                    <input name="level" type="radio" value="Low" /> Low
                 </label> 
                 <label class="btn btn-warning">
-                    <input type="radio" value="2" /> Moderate
+                    <input name="level" type="radio" value="Moderate" /> Moderate
                 </label> 
                 <label class="btn btn-danger">
-                    <input type="radio"value="3" /> High
+                    <input name="level" type="radio"value="High" /> High
                 </label> 
             </div>
             </div>
@@ -116,10 +117,10 @@
             <label class="control-label">Occasion:</label>
             <div class="btn-group" data-toggle="buttons">
                 <label class="btn btn-default">
-                    <input type="radio" value="1" /> Planned
+                    <input name="occasion" type="radio" value="Planned" /> Planned
                 </label> 
                 <label class="btn btn-default">
-                    <input type="radio" value="2" /> Not Planned
+                    <input name="occasion"  type="radio" value="Not Planned" /> Not Planned
                 </label> 
             </div>
             </div>
@@ -132,11 +133,10 @@
               </div>
             </div>
 
-            <button type="submit" class="btn btn-success">Send!</button>
-
+            <button id="btn-send" class="btn btn-primary">Send!</button>
+			<button id="btn-file" class="btn btn-primary">Create file</button>
 
           </form>
-
           </div>
         </div>
         <div class="col-md-9">
@@ -264,14 +264,43 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
 
     <script>
-    var com= ["Everything is OK","Workpiece handling","Machine tool setup","Tool change","Broken insert, tool","Lack of tool, inserts, workpiece, other material","Lack of operator","Lack of other consumable","Machine error","Coolant problem","Strong vibrations","Wrong chip generation","Programming error"];
+		var com= ["Everything is OK","Workpiece handling","Machine tool setup","Tool change","Broken insert, tool","Lack of tool, inserts, workpiece, other material","Lack of operator","Lack of other consumable","Machine error","Coolant problem","Strong vibrations","Wrong chip generation","Programming error"];
 
-    for(i = 0; i < com.length; i++) {
-      $('#comments').append('<label class="radio"><input type="radio" name = "optionsRadios" value="'+i+'"/>'+com[i]+'</label>');
-    }
-    $('#comments').append('<label class="radio"><input type="radio" name = "optionsRadios" value="o"/><input type="text" /></label>');
+		for(i = 0; i < com.length; i++) {
+		  $('#comments').append('<label class="radio"><input type="radio" name = "optionsRadios" value="'+com[i]+'"/>'+com[i]+'</label>');
+		}
+		$('#comments').append('<label class="radio"><input type="radio" name = "optionsRadios" value="o"/><input id="freeComment" type="text" /></label>');
 
     </script>
+	
+	<script>
+		var comments=[];
+		if(sessionStorage.getItem('comments')){
+			console.log(sessionStorage.getItem('comments'));
+			comments = JSON.parse(sessionStorage.getItem('comments'));
+		}
+		$("#btn-send").click(function() {
+			var comment={};
+			comment.timestamp=new Date().toLocaleString();
+			comment.val=$('input[name="optionsRadios"]:checked').val();
+			comment.level=$('input[name="level"]:checked').val();
+			if($('input[name="occasion"]:checked').val() === "o"){
+				comment.occasion=$('#freeComment').val();
+			}else{
+				comment.occasion=$('input[name="occasion"]:checked').val();
+			}
+			comments.push(comment);
+			var stringified=JSON.stringify(comments);
+			sessionStorage.setItem('comments', stringified);
+		});
+		
+		$("#btn-file").click(function() {
+			var comments = sessionStorage.getItem('comments');
+			window.open("data:text/json,"+comments);
+			sessionStorage.clear();
+		});
+		
+	</script>
   </body>
 </html>
 
