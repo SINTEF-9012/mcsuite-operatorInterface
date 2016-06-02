@@ -63,7 +63,9 @@
 	<script src="https://cdn.webrtc-experiment.com/RecordRTC.js"></script>
     <script src="https://cdn.webrtc-experiment.com/gif-recorder.js"></script>
     <script src="https://cdn.webrtc-experiment.com/getScreenId.js"></script>
-	
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+
 	<script src="./js/videojs.record.min.js"></script>
 	<!-- for Edige/FF/Chrome/Opera/etc. getUserMedia support -->
     <script src="https://cdn.webrtc-experiment.com/gumadapter.js"></script>
@@ -218,8 +220,57 @@ player.on('finishRecord', function()
 {
     // the blob object contains the recorded data that
     // can be downloaded by the user, stored on server etc.
-    window.open(player.recordedData);
+    //var u = URL.createObjectURL(player.recordedData);
+	invokeSaveAsDialog(player.recordedData, "test.webm");
 });
+
+function invokeSaveAsDialog(file, fileName) {
+    if (!file) {
+        throw 'Blob object is required.';
+    }
+    if (!file.type) {
+        file.type = 'video/webm';
+    }
+
+    var fileExtension = file.type.split('/')[1];
+    if (fileName && fileName.indexOf('.') !== -1) {
+        var splitted = fileName.split('.');
+        fileName = splitted[0];
+        fileExtension = splitted[1];
+    }
+
+    var fileFullName = (fileName || (Math.round(Math.random() * 9999999999) + 888888888)) + '.' + fileExtension;
+    if (typeof navigator.msSaveOrOpenBlob !== 'undefined') {
+        return navigator.msSaveOrOpenBlob(file, fileFullName);
+    } else if (typeof navigator.msSaveBlob !== 'undefined') {
+        return navigator.msSaveBlob(file, fileFullName);
+    }
+
+    var hyperlink = document.createElement('a');
+    hyperlink.href = URL.createObjectURL(file);
+    hyperlink.target = '_blank';
+    hyperlink.download = fileFullName;
+    if (!!navigator.mozGetUserMedia) {
+        hyperlink.onclick = function() {
+            (document.body || document.documentElement).removeChild(hyperlink);
+        };
+        (document.body || document.documentElement).appendChild(hyperlink);
+    }
+
+    var evt = new MouseEvent('click', {
+        view: window,
+        bubbles: true,
+        cancelable: true
+    });
+
+    hyperlink.dispatchEvent(evt);
+
+    if (!navigator.mozGetUserMedia) {
+        URL.revokeObjectURL(hyperlink.href);
+    }
+
+}
+
 </script>
 				</p>
 			  </div>
@@ -257,14 +308,6 @@ player.on('finishRecord', function()
 		  </div>
 		</nav>
 	  </footer>
-
-	
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <!-- Latest compiled and minified JavaScript -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
 
     <script>
 		var com= ["Everything is OK","Workpiece handling","Machine tool setup","Tool change","Broken insert, tool","Lack of tool, inserts, workpiece, other material","Lack of operator","Lack of other consumable","Machine error","Coolant problem","Strong vibrations","Wrong chip generation","Programming error"];
