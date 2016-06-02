@@ -210,7 +210,7 @@ player.on('deviceError', function()
 // user clicked the record button and started recording
 player.on('startRecord', function()
 {
-    window.open(player.recordedData);
+    console.log('started recording!');
 });
 
 // user completed recording and stream is available
@@ -218,7 +218,7 @@ player.on('finishRecord', function()
 {
     // the blob object contains the recorded data that
     // can be downloaded by the user, stored on server etc.
-    console.log('finished recording: ', player.recordedData);
+    window.open(player.recordedData);
 });
 </script>
 				</p>
