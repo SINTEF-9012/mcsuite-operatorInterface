@@ -481,7 +481,7 @@ var recordingDIV = document.querySelector('.recordrtc');
             // disabling this option because currently this demo
             // doesn't supports publishing two blobs.
             // todo: add support of uploading both WAV/WebM to server.
-            if(false && webrtcDetectedBrowser === 'chrome') {
+            if(webrtcDetectedBrowser === 'chrome') {
                 recordingMedia.innerHTML = '<option value="record-audio-plus-video">Audio+Video</option>' 
                                             + recordingMedia.innerHTML;
                 console.info('This RecordRTC demo merely tries to playback recorded audio/video sync inside the browser. It still generates two separate files (WAV/WebM).');
