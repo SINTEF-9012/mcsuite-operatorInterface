@@ -169,21 +169,7 @@
 			  <li><a data-toggle="tab" href="#chat">Live Chat</a></li>
 			</ul>
 			<div class="tab-content">
-			  <div id="chat" class="tab-pane fade in active">
-				<p>
-				    <div class="embed-responsive">
-					  <!--<iframe class="embed-responsive-item" src="https://192.168.11.20/"></iframe>-->
-					</div>
-				</p>
-			  </div>
-			  <div id="camera" class="tab-pane fade">
-				<p>
-				    <div class="embed-responsive embed-responsive-16by9">
-					  <iframe class="embed-responsive-item" src="https://ip-kamera01-ideko.danobatgroup.com/"></iframe>
-					</div>
-				</p>
-			  </div>
-			  <div id="sound" class="tab-pane fade">
+			<div id="sound" class="tab-pane fade  in active">
 				<p>
 				<div>
 					<video id="myVideo" class="video-js vjs-default-skin"></video>
@@ -239,7 +225,7 @@ function invokeSaveAsDialog(file, fileName) {
         fileExtension = splitted[1];
     }
 
-    var fileFullName = (fileName || (Math.round(Math.random() * 9999999999) + 888888888)) + '.' + fileExtension;
+    var fileFullName = (fileName || new Date().toLocaleString() + '.' + fileExtension;
     if (typeof navigator.msSaveOrOpenBlob !== 'undefined') {
         return navigator.msSaveOrOpenBlob(file, fileFullName);
     } else if (typeof navigator.msSaveBlob !== 'undefined') {
@@ -247,7 +233,8 @@ function invokeSaveAsDialog(file, fileName) {
     }
 
     var hyperlink = document.createElement('a');
-    hyperlink.href = URL.createObjectURL(file);
+	hyperlink.href = URL.createObjectURL(file);	
+	
     hyperlink.target = '_blank';
     hyperlink.download = fileFullName;
     if (!!navigator.mozGetUserMedia) {
@@ -274,6 +261,21 @@ function invokeSaveAsDialog(file, fileName) {
 </script>
 				</p>
 			  </div>
+			  <div id="chat" class="tab-pane fade">
+				<p>
+				    <div class="embed-responsive">
+					  <!--<iframe class="embed-responsive-item" src="https://192.168.11.20/"></iframe>-->
+					</div>
+				</p>
+			  </div>
+			  <div id="camera" class="tab-pane fade">
+				<p>
+				    <div class="embed-responsive embed-responsive-16by9">
+					  <!--<iframe class="embed-responsive-item" src="https://ip-kamera01-ideko.danobatgroup.com/"></iframe>-->
+					</div>
+				</p>
+			  </div>
+			  
 			</div>
        </div>
 
