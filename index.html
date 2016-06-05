@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+
+<head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -12,13 +13,14 @@
 
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
-	
-	<style>
+
+    <style>
         .recordrtc button {
             font-size: inherit;
         }
         
-        .recordrtc button, .recordrtc select {
+        .recordrtc button,
+        .recordrtc select {
             vertical-align: middle;
             line-height: 1;
             padding: 2px 5px;
@@ -27,7 +29,8 @@
             margin: 0;
         }
         
-        .recordrtc, .recordrtc .header {
+        .recordrtc,
+        .recordrtc .header {
             display: block;
             text-align: center;
             padding-top: 0;
@@ -40,314 +43,310 @@
         .recordrtc option[disabled] {
             display: none;
         }
-		/* place fullscreen control on right side of the player */
-		.video-js .vjs-control.vjs-fullscreen-control {
-			position: absolute;
-			right: 0;
-		}
-
-		/* make sure the custom controls are always visible because
+        /* place fullscreen control on right side of the player */
+        
+        .video-js .vjs-control.vjs-fullscreen-control {
+            position: absolute;
+            right: 0;
+        }
+        /* make sure the custom controls are always visible because
 		   the plugin hides and replace the video.js native mobile
 		   controls */
-		.vjs-using-native-controls .vjs-control-bar {
-			display: flex !important;
-		}
-		  /* change player background color */
-		  #myVideo {
-			  background-color: #E8E884;
-		  }
+        
+        .vjs-using-native-controls .vjs-control-bar {
+            display: flex !important;
+        }
+        /* change player background color */
+        
+        #myVideo {
+            background-color: #E8E884;
+        }
     </style>
-	<link href="https://vjs.zencdn.net/5.9.2/video-js.min.css" rel="stylesheet">
-	 <link href="./css/videojs.record.min.css" rel="stylesheet">
-	<script src="https://vjs.zencdn.net/5.9.2/video.min.js"></script>
-	<script src="https://cdn.webrtc-experiment.com/RecordRTC.js"></script>
+    <link href="https://vjs.zencdn.net/5.9.2/video-js.min.css" rel="stylesheet">
+    <link href="./css/videojs.record.min.css" rel="stylesheet">
+    <script src="https://vjs.zencdn.net/5.9.2/video.min.js"></script>
+    <script src="https://cdn.webrtc-experiment.com/RecordRTC.js"></script>
     <script src="https://cdn.webrtc-experiment.com/gif-recorder.js"></script>
     <script src="https://cdn.webrtc-experiment.com/getScreenId.js"></script>
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
 
-	<script src="./js/videojs.record.min.js"></script>
-	<!-- for Edige/FF/Chrome/Opera/etc. getUserMedia support -->
+    <script src="./js/videojs.record.min.js"></script>
+    <!-- for Edige/FF/Chrome/Opera/etc. getUserMedia support -->
     <script src="https://cdn.webrtc-experiment.com/gumadapter.js"></script>
 
-  </head>
+</head>
 
-  <body>
+<body>
     <header class="navbar navbar-inverse">
-    <div class="container-fluid">
-      <div class="navbar-header">
-        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-responsive-collapse">
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-        </button>
-        <a class="navbar-brand" href="/" title="MC-Suite Operator Interface">Operator Interface</a>
-      </div>
-      <div class="navbar-collapse collapse navbar-responsive-collapse">
-        <ul class="nav navbar-nav navbar-right">     
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-responsive-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/" title="MC-Suite Operator Interface">Operator Interface</a>
+            </div>
+            <div class="navbar-collapse collapse navbar-responsive-collapse">
+                <ul class="nav navbar-nav navbar-right">
 
-          <li><a href="./owncloud/">File repository</a></li>
-          <li><a href="">Monitoring Dashboard</a></li>
-          
-          <li class="dropdown">
-                <a href="#" data-target="#" class="dropdown-toggle" data-toggle="dropdown">User <b class="caret"></b></a>
-                <ul class="dropdown-menu menu-right">
-                	 <li><a href="">My Account</a></li>
-                    <li><a href="">Logout</a></li>
+                    <li><a href="./owncloud/">File repository</a></li>
+                    <li><a href="">Monitoring Dashboard</a></li>
+
+                    <li class="dropdown">
+                        <a href="#" data-target="#" class="dropdown-toggle" data-toggle="dropdown">User <b class="caret"></b></a>
+                        <ul class="dropdown-menu menu-right">
+                            <li><a href="">My Account</a></li>
+                            <li><a href="">Logout</a></li>
+                        </ul>
+                    </li>
+
+
+
                 </ul>
-            </li>
-          
+            </div>
+            <div></div>
+        </div>
+    </header>
 
 
-        </ul>
-      </div>
-      <div></div>
-    </div>
-  </header>
-  
-
-  <div class="span4 offset4" id="alert-div" style="position:fixed;width:40%;margin-top:10px;z-index:100000"></div>
+    <div class="span4 offset4" id="alert-div" style="position:fixed;width:40%;margin-top:10px;z-index:100000"></div>
 
     <div id="body" class="container-fluid">
-      <!-- Example row of columns -->
-      <div class="row">
-        <div class="col-md-3">
-          <div class="jumbotron">
-             <h2>Publish an observation: </h2>
+        <!-- Example row of columns -->
+        <div class="row">
+            <div class="col-md-3">
+                <div class="jumbotron">
+                    <h2>Publish an observation: </h2>
 
 
-            <form role="form">
+                    <form role="form">
 
-            <div class="form-group">
-            <label class="control-label">Importance Level:</label>
-            <div class="btn-group" data-toggle="buttons">
-                <label class="btn btn-success">
-                    <input name="level" type="radio" value="Low" /> Low
-                </label> 
-                <label class="btn btn-warning">
-                    <input name="level" type="radio" value="Moderate" /> Moderate
-                </label> 
-                <label class="btn btn-danger">
-                    <input name="level" type="radio"value="High" /> High
-                </label> 
+                        <div class="form-group">
+                            <label class="control-label">Importance Level:</label>
+                            <div class="btn-group" data-toggle="buttons">
+                                <label class="btn btn-success">
+                                    <input name="level" type="radio" value="Low" /> Low
+                                </label>
+                                <label class="btn btn-warning">
+                                    <input name="level" type="radio" value="Moderate" /> Moderate
+                                </label>
+                                <label class="btn btn-danger">
+                                    <input name="level" type="radio" value="High" /> High
+                                </label>
+                            </div>
+                        </div>
+
+
+                        <br/>
+
+                        <div class="form-group">
+                            <label class="control-label">Occasion:</label>
+                            <div class="btn-group" data-toggle="buttons">
+                                <label class="btn btn-default">
+                                    <input name="occasion" type="radio" value="Planned" /> Planned
+                                </label>
+                                <label class="btn btn-default">
+                                    <input name="occasion" type="radio" value="Not Planned" /> Not Planned
+                                </label>
+                            </div>
+                        </div>
+
+                        <br/>
+
+                        <div class="form-group">
+                            <div class="input-group" id="comments">
+                                <label class="control-label">Comment:</label>
+                            </div>
+                        </div>
+
+                        <button id="btn-send" class="btn btn-primary">Send!</button>
+                        <button id="btn-file" class="btn btn-primary">Create file</button>
+
+                    </form>
+                </div>
             </div>
+            <div class="col-md-9">
+                <ul class="nav nav-tabs">
+                    <li class="active"><a data-toggle="tab" href="#sound">Message recording</a></li>
+                    <li><a data-toggle="tab" href="#camera">Workspace Camera</a></li>
+                    <li><a data-toggle="tab" href="#chat">Live Chat</a></li>
+                </ul>
+                <div class="tab-content">
+                    <div id="chat" class="tab-pane fade">
+                        <p>
+                            <div class="embed-responsive embed-responsive-16by9">
+                                <iframe class="embed-responsive-item" src="https://54.195.19.23/"></iframe>
+                            </div>
+                        </p>
+                    </div>
+                    <div id="camera" class="tab-pane fade">
+                        <p>
+                            <div class="embed-responsive embed-responsive-16by9">
+                                <iframe class="embed-responsive-item" src="https://ip-kamera01-ideko.danobatgroup.com/"></iframe>
+                            </div>
+                        </p>
+                    </div>
+                    <div id="sound" class="tab-pane fade in active">
+                        <p>
+                            <div>
+                                <video id="myVideo" class="video-js vjs-default-skin"></video>
+                            </div>
+                            <script>
+                                var player = videojs("myVideo", {
+                                    controls: true,
+                                    width: 640,
+                                    height: 480,
+                                    plugins: {
+                                        record: {
+                                            audio: true,
+                                            video: true,
+                                            maxLength: 240,
+                                            debug: true
+                                        }
+                                    }
+                                });
+                                // error handling
+                                player.on('deviceError', function () {
+                                    console.log('device error:', player.deviceErrorCode);
+                                });
+
+                                // user clicked the record button and started recording
+                                player.on('startRecord', function () {
+                                    console.log('started recording!');
+                                });
+
+                                // user completed recording and stream is available
+                                player.on('finishRecord', function () {
+                                    // the blob object contains the recorded data that
+                                    // can be downloaded by the user, stored on server etc.
+                                    //var u = URL.createObjectURL(player.recordedData);
+                                    invokeSaveAsDialog(player.recordedData, "test.webm");
+                                });
+
+                                function invokeSaveAsDialog(file, fileName) {
+                                    if (!file) {
+                                        throw 'Blob object is required.';
+                                    }
+                                    if (!file.type) {
+                                        file.type = 'video/webm';
+                                    }
+
+                                    var fileExtension = file.type.split('/')[1];
+                                    if (fileName && fileName.indexOf('.') !== -1) {
+                                        var splitted = fileName.split('.');
+                                        fileName = splitted[0];
+                                        fileExtension = splitted[1];
+                                    }
+
+                                    var fileFullName = (fileName || (Math.round(Math.random() * 9999999999) + 888888888)) + '.' + fileExtension;
+                                    if (typeof navigator.msSaveOrOpenBlob !== 'undefined') {
+                                        return navigator.msSaveOrOpenBlob(file, fileFullName);
+                                    } else if (typeof navigator.msSaveBlob !== 'undefined') {
+                                        return navigator.msSaveBlob(file, fileFullName);
+                                    }
+
+                                    var hyperlink = document.createElement('a');
+                                    hyperlink.href = URL.createObjectURL(file);
+
+                                    hyperlink.target = '_blank';
+                                    hyperlink.download = fileFullName;
+                                    if (!!navigator.mozGetUserMedia) {
+                                        hyperlink.onclick = function () {
+                                            (document.body || document.documentElement).removeChild(hyperlink);
+                                        };
+                                        (document.body || document.documentElement).appendChild(hyperlink);
+                                    }
+
+                                    var evt = new MouseEvent('click', {
+                                        view: window,
+                                        bubbles: true,
+                                        cancelable: true
+                                    });
+
+                                    hyperlink.dispatchEvent(evt);
+
+                                    if (!navigator.mozGetUserMedia) {
+                                        URL.revokeObjectURL(hyperlink.href);
+                                    }
+
+                                }
+                            </script>
+                        </p>
+                    </div>
+                </div>
             </div>
 
-
-            <br/>
-
-            <div class="form-group">
-            <label class="control-label">Occasion:</label>
-            <div class="btn-group" data-toggle="buttons">
-                <label class="btn btn-default">
-                    <input name="occasion" type="radio" value="Planned" /> Planned
-                </label> 
-                <label class="btn btn-default">
-                    <input name="occasion"  type="radio" value="Not Planned" /> Not Planned
-                </label> 
-            </div>
-            </div>
-
-            <br/>
-
-            <div class="form-group">
-              <div class="input-group" id="comments">
-                <label class="control-label">Comment:</label>
-              </div>
-            </div>
-
-            <button id="btn-send" class="btn btn-primary">Send!</button>
-			<button id="btn-file" class="btn btn-primary">Create file</button>
-
-          </form>
-          </div>
         </div>
-        <div class="col-md-9">
-			<ul class="nav nav-tabs">			  
-				<li  class="active"><a data-toggle="tab" href="#sound">Message recording</a></li>
-			  <li><a data-toggle="tab" href="#camera">Workspace Camera</a></li>
-			  <li><a data-toggle="tab" href="#chat">Live Chat</a></li>
-			</ul>
-			<div class="tab-content">
-			  <div id="chat" class="tab-pane fade">
-				<p>
-				    <div class="embed-responsive embed-responsive-16by9">
-					  <iframe class="embed-responsive-item" src="https://54.195.19.23/"></iframe>
-					</div>
-				</p>
-			  </div>
-			  <div id="camera" class="tab-pane fade">
-				<p>
-				    <div class="embed-responsive embed-responsive-16by9">
-					  <iframe class="embed-responsive-item" src="https://ip-kamera01-ideko.danobatgroup.com/"></iframe>
-					</div>
-				</p>
-			  </div>
-			  <div id="sound" class="tab-pane fade in active">
-				<p>
-				<div>
-					<video id="myVideo" class="video-js vjs-default-skin"></video>
-				</div>
-<script>
-var player = videojs("myVideo",
-{
-    controls: true,
-    width: 640,
-    height: 480,
-    plugins: {
-        record: {
-            audio: true,
-            video: true,
-            maxLength: 240,
-            debug: true
-        }
-    }
-});
-// error handling
-player.on('deviceError', function()
-{
-    console.log('device error:', player.deviceErrorCode);
-});
 
-// user clicked the record button and started recording
-player.on('startRecord', function()
-{
-    console.log('started recording!');
-});
+        <hr>
 
-// user completed recording and stream is available
-player.on('finishRecord', function()
-{
-    // the blob object contains the recorded data that
-    // can be downloaded by the user, stored on server etc.
-    //var u = URL.createObjectURL(player.recordedData);
-	invokeSaveAsDialog(player.recordedData, "test.webm");
-});
+    </div>
+    <!-- /container -->
 
-function invokeSaveAsDialog(file, fileName) {
-    if (!file) {
-        throw 'Blob object is required.';
-    }
-    if (!file.type) {
-        file.type = 'video/webm';
-    }
-
-    var fileExtension = file.type.split('/')[1];
-    if (fileName && fileName.indexOf('.') !== -1) {
-        var splitted = fileName.split('.');
-        fileName = splitted[0];
-        fileExtension = splitted[1];
-    }
-
-    var fileFullName = (fileName || (Math.round(Math.random() * 9999999999) + 888888888)) + '.' + fileExtension;
-    if (typeof navigator.msSaveOrOpenBlob !== 'undefined') {
-        return navigator.msSaveOrOpenBlob(file, fileFullName);
-    } else if (typeof navigator.msSaveBlob !== 'undefined') {
-        return navigator.msSaveBlob(file, fileFullName);
-    }
-
-    var hyperlink = document.createElement('a');
-	hyperlink.href = URL.createObjectURL(file);	
-
-    hyperlink.target = '_blank';
-    hyperlink.download = fileFullName;
-    if (!!navigator.mozGetUserMedia) {
-        hyperlink.onclick = function() {
-            (document.body || document.documentElement).removeChild(hyperlink);
-        };
-        (document.body || document.documentElement).appendChild(hyperlink);
-    }
-
-    var evt = new MouseEvent('click', {
-        view: window,
-        bubbles: true,
-        cancelable: true
-    });
-
-    hyperlink.dispatchEvent(evt);
-
-    if (!navigator.mozGetUserMedia) {
-        URL.revokeObjectURL(hyperlink.href);
-    }
-
-}
-
-</script>
-				</p>
-			  </div>
-			</div>
-       </div>
-
-      </div>
-
-      <hr>
-
-    </div> <!-- /container -->
-
-		<footer class="navbar navbar-inverse" role="navigation">
-		<nav class="container-fluid">
-		  <div class="navbar-header">
-			<button class="navbar-toggle" data-toggle="collapse" data-target=".navFooterCollapse">
-			  <span class="icon-bar"></span>
-			  <span class="icon-bar"></span>
-			  <span class="icon-bar"></span>
-			</button>
-		  </div>
-		  <div class="navbar-collapse collapse navbar-responsive-collapse">
-			<ul class="nav navbar-nav navbar-left">
-			  <li><a href="/documentation/">Documentation</a></li>
-			  <li><a href="/api/">API</a></li>
-			  <li><a href="/faq/">FAQ</a></li>
-			</ul>
-			<ul class="nav navbar-nav navbar-right">
-			  <li><a href="/terms-of-use/">Terms of use</a></li>
-			  <li><a href="/privacy-policy/">Privacy policy</a></li>
-			  <li><a href="/cookie-policy/">Cookie policy</a></li>
-			  <li><a href="/contact/">Contact</a></li>
-			  <li><a href="/feedback/"><i class="mdi-communication-messenger"></i>Feedback</a></li>
-			</ul>
-		  </div>
-		</nav>
-	  </footer>
+    <footer class="navbar navbar-inverse" role="navigation">
+        <nav class="container-fluid">
+            <div class="navbar-header">
+                <button class="navbar-toggle" data-toggle="collapse" data-target=".navFooterCollapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div>
+            <div class="navbar-collapse collapse navbar-responsive-collapse">
+                <ul class="nav navbar-nav navbar-left">
+                    <li><a href="/documentation/">Documentation</a></li>
+                    <li><a href="/api/">API</a></li>
+                    <li><a href="/faq/">FAQ</a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="/terms-of-use/">Terms of use</a></li>
+                    <li><a href="/privacy-policy/">Privacy policy</a></li>
+                    <li><a href="/cookie-policy/">Cookie policy</a></li>
+                    <li><a href="/contact/">Contact</a></li>
+                    <li><a href="/feedback/"><i class="mdi-communication-messenger"></i>Feedback</a></li>
+                </ul>
+            </div>
+        </nav>
+    </footer>
 
     <script>
-		var com= ["Everything is OK","Workpiece handling","Machine tool setup","Tool change","Broken insert, tool","Lack of tool, inserts, workpiece, other material","Lack of operator","Lack of other consumable","Machine error","Coolant problem","Strong vibrations","Wrong chip generation","Programming error"];
+        var com = ["Everything is OK", "Workpiece handling", "Machine tool setup", "Tool change", "Broken insert, tool", "Lack of tool, inserts, workpiece, other material", "Lack of operator", "Lack of other consumable", "Machine error", "Coolant problem", "Strong vibrations", "Wrong chip generation", "Programming error"];
 
-		for(i = 0; i < com.length; i++) {
-		  $('#comments').append('<label class="radio"><input type="radio" name = "optionsRadios" value="'+com[i]+'"/>'+com[i]+'</label>');
-		}
-		$('#comments').append('<label class="radio"><input type="radio" name = "optionsRadios" value="o"/><input id="freeComment" type="text" /></label>');
-
+        for (i = 0; i < com.length; i++) {
+            $('#comments').append('<label class="radio"><input type="radio" name = "optionsRadios" value="' + com[i] + '"/>' + com[i] + '</label>');
+        }
+        $('#comments').append('<label class="radio"><input type="radio" name = "optionsRadios" value="o"/><input id="freeComment" type="text" /></label>');
     </script>
-	
-	<script>
-		var comments=[];
-		if(sessionStorage.getItem('comments')){
-			console.log(sessionStorage.getItem('comments'));
-			comments = JSON.parse(sessionStorage.getItem('comments'));
-		}
-		$("#btn-send").click(function() {
-			var comment={};
-			comment.timestamp=new Date().toLocaleString();
-			comment.val=$('input[name="optionsRadios"]:checked').val();
-			comment.level=$('input[name="level"]:checked').val();
-			if($('input[name="occasion"]:checked').val() === "o"){
-				comment.occasion=$('#freeComment').val();
-			}else{
-				comment.occasion=$('input[name="occasion"]:checked').val();
-			}
-			comments.push(comment);
-			var stringified=JSON.stringify(comments);
-			sessionStorage.setItem('comments', stringified);
-		});
-		
-		$("#btn-file").click(function() {
-			var comments = sessionStorage.getItem('comments');
-			window.open("data:text/json,"+comments);
-			sessionStorage.clear();
-		});
-		
-	</script>
-  </body>
-</html>
 
+    <script>
+        var comments = [];
+        if (sessionStorage.getItem('comments')) {
+            console.log(sessionStorage.getItem('comments'));
+            comments = JSON.parse(sessionStorage.getItem('comments'));
+        }
+        $("#btn-send").click(function () {
+            var comment = {};
+            comment.timestamp = new Date().toLocaleString();
+            comment.val = $('input[name="optionsRadios"]:checked').val();
+            comment.level = $('input[name="level"]:checked').val();
+            if ($('input[name="occasion"]:checked').val() === "o") {
+                comment.occasion = $('#freeComment').val();
+            } else {
+                comment.occasion = $('input[name="occasion"]:checked').val();
+            }
+            comments.push(comment);
+            var stringified = JSON.stringify(comments);
+            sessionStorage.setItem('comments', stringified);
+        });
+
+        $("#btn-file").click(function () {
+            var comments = sessionStorage.getItem('comments');
+            window.open("data:text/json," + comments);
+            sessionStorage.clear();
+        });
+    </script>
+</body>
+
+</html>
