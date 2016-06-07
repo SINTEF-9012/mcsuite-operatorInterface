@@ -124,6 +124,17 @@
                     <form role="form">
 
                         <div class="form-group">
+                            <div class="input-group" id="timeperiod">
+                                <b style="font-size:14px">From : </b>
+                                <input name="from" type="text" class="input-medium search-query" placeholder="yyyy-MM-ddTHH:mm:ss" rel="tooltip" title="or timestamp ; or 'now'"></input>
+                                &nbsp;
+                                <b style="font-size:14px">To : </b>
+                                <input name="to" type="text" class="input-medium search-query" placeholder="yyyy-MM-ddTHH:mm:ss" rel="tooltip" title="or timestamp ; or 'now'"></input>
+                                &nbsp;
+                            </div>
+                        </div>
+
+                        <div class="form-group">
                             <label class="control-label">Importance Level:</label>
                             <div class="btn-group" data-toggle="buttons">
                                 <label class="btn btn-success">
@@ -161,6 +172,7 @@
                             </div>
                         </div>
 
+
                         <button id="btn-send" class="btn btn-primary">Send!</button>
                         <button id="btn-file" class="btn btn-primary">Create file</button>
 
@@ -184,8 +196,8 @@
                     <div id="camera" class="tab-pane fade">
                         <p>
                             <div>
-                                <button id="btn-recordingCam" class="btn btn-primary" onclick="startRecording();">Start Recording <span class="glyphicon glyphicon-record" aria-hidden="true"></span></button>
-                                <button id="btn-stopRecordingCam" class="btn btn-danger" onclick="stopRecording();">Stop Recording <span class="glyphicon glyphicon-stop" aria-hidden="true"></span></button><br/ >
+                                <button id="btn-recordingCam" class="btn btn-primary" onclick="startRecording();">Start Recording</button>
+                                <br/>
                             </div>
                             <div class="embed-responsive embed-responsive-16by9">
                                 <iframe class="embed-responsive-item" src="https://ip-kamera01-ideko.danobatgroup.com/"></iframe>
@@ -335,6 +347,8 @@
             comment.timestamp = new Date().toLocaleString();
             comment.val = $('input[name="optionsRadios"]:checked').val();
             comment.level = $('input[name="level"]:checked').val();
+            comment.from = $('input[name="from"]').val();
+            comment.to = $('input[name="to"]').val();
             if ($('input[name="occasion"]:checked').val() === "o") {
                 comment.occasion = $('#freeComment').val();
             } else {
@@ -350,21 +364,28 @@
             window.open("data:text/json," + comments);
             sessionStorage.clear();
         });
-        
-        function startRecording(){
-            $.get("https://54.170.207.195/cgi-bin/startRecording.sh", function(data) {
-                console.log("Started recording camera");
-                $("#btn-recordingCam").disabled;
-            });   
+
+        function startRecording() {
+            var button = $("#btn-recordingCam");
+            if (button.hasClass('btn-danger')) {
+                console.log(button);
+                button.innerHTML = "Start Recording";
+                button.removeClass('btn-danger');
+                button.addClass('btn-primary');
+                /*$.get("https://54.170.207.195/cgi-bin/stopRecording.sh", function (data) {
+                    console.log("Stopped recording camera");
+                });*/
+            } else {
+                console.log(button);
+                button.text = "Stop Recording";
+                button.removeClass('btn-primary');
+                button.addClass('btn-danger');
+                /*$.get("https://54.170.207.195/cgi-bin/startRecording.sh", function (data) {
+                    console.log("Started recording camera");
+                });*/
+            }
+
         }
-        
-        function stopRecording(){
-            $.get("https://54.170.207.195/cgi-bin/stopRecording.sh", function(data) {
-                console.log("Stopped recording camera");
-                $("#btn-stopRecordingCam").disabled;
-            });
-        }
-        
     </script>
 </body>
 
