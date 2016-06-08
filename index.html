@@ -196,7 +196,7 @@
                     <div id="camera" class="tab-pane fade">
                         <p>
                             <div>
-                                <button id="btn-recordingCam" class="btn btn-primary" onclick="startRecording();">Start Recording</button>
+                                <button id="btn-recordingCam" class="btn btn-primary" onclick="startRecording();">Start record &nbsp;<span class="glyphicon glyphicon-record" aria-hidden="true"></span></button>
                                 <br/>
                             </div>
                             <div class="embed-responsive embed-responsive-16by9">
@@ -368,21 +368,21 @@
         function startRecording() {
             var button = $("#btn-recordingCam");
             if (button.hasClass('btn-danger')) {
-                console.log(button);
-                button.innerHTML = "Start Recording";
+                button.empty();
+                button.append('Stop record &nbsp;<span class="glyphicon glyphicon-record" aria-hidden="true"></span>');
                 button.removeClass('btn-danger');
                 button.addClass('btn-primary');
-                /*$.get("https://54.170.207.195/cgi-bin/stopRecording.sh", function (data) {
+                $.get("https://54.170.207.195/cgi-bin/stopRecording.sh", function (data) {
                     console.log("Stopped recording camera");
-                });*/
+                });
             } else {
-                console.log(button);
-                button.text = "Stop Recording";
+                button.empty();
+                button.append('Start record &nbsp;<span class="glyphicon glyphicon-stop" aria-hidden="true"></span>');
                 button.removeClass('btn-primary');
                 button.addClass('btn-danger');
-                /*$.get("https://54.170.207.195/cgi-bin/startRecording.sh", function (data) {
+                $.get("https://54.170.207.195/cgi-bin/startRecording.sh", function (data) {
                     console.log("Started recording camera");
-                });*/
+                });
             }
 
         }
