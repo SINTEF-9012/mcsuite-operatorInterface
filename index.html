@@ -116,7 +116,7 @@
     <div id="body" class="container-fluid">
         <!-- Example row of columns -->
         <div class="row">
-            <div class="col-md-3">
+            <div class="col-md-4">
                 <div class="jumbotron">
                     <h2>Publish an observation: </h2>
 
@@ -127,7 +127,7 @@
                             <div class="input-group" id="timeperiod">
                                 <b style="font-size:14px">From : </b>
                                 <input name="from" type="text" class="input-medium search-query" placeholder="yyyy-MM-ddTHH:mm:ss" rel="tooltip" title="or timestamp ; or 'now'"></input>
-                                &nbsp;
+                                <br/>
                                 <b style="font-size:14px">To : </b>
                                 <input name="to" type="text" class="input-medium search-query" placeholder="yyyy-MM-ddTHH:mm:ss" rel="tooltip" title="or timestamp ; or 'now'"></input>
                                 &nbsp;
@@ -179,7 +179,7 @@
                     </form>
                 </div>
             </div>
-            <div class="col-md-9">
+            <div class="col-md-8">
                 <ul class="nav nav-tabs">
                     <li class="active"><a data-toggle="tab" href="#sound">Message recording</a></li>
                     <li><a data-toggle="tab" href="#camera">Workspace Camera</a></li>
@@ -367,7 +367,7 @@
 
         function startRecording() {
             var button = $("#btn-recordingCam");
-            if (button.hasClass('btn-danger')) {
+            if (button.hasClass('btn-danger')) {    
                 button.empty();
                 button.append('Stop record &nbsp;<span class="glyphicon glyphicon-record" aria-hidden="true"></span>');
                 button.removeClass('btn-danger');
