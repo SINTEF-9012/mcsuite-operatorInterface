@@ -2,7 +2,7 @@
 MC-Suite Operator Interface
 
 # Configuration
-The session management feature of the operator interface leverages the CouchDB session mechanism. In case the operator interface is not hosted on the same server then CouchDB, the later has to be configured to accept cross-domain requests as depicted in the Cross-Origin Resource Sharing (CORS) specification. This can be done by modifying the CouchDB configuration called local.ini as follows:
+The session management feature of the operator interface leverages the CouchDB session mechanism. In case the operator interface is not hosted on the same server than CouchDB, the later has to be configured to accept cross-domain requests as depicted in the Cross-Origin Resource Sharing (CORS) specification. This can be done by modifying the CouchDB configuration file called "local.ini" as follows:
 
 [httpd]
 
