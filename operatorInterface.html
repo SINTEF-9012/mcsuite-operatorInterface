@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="SINTEF ICT">
+
+    <title>MC-Suite operator interface</title>
+
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="./css/bootstrap.min.css" crossorigin="anonymous">
+
+    <style>
+        .recordrtc button {
+            font-size: inherit;
+        }
+        
+        .recordrtc button,
+        .recordrtc select {
+            vertical-align: middle;
+            line-height: 1;
+            padding: 2px 5px;
+            height: auto;
+            font-size: inherit;
+            margin: 0;
+        }
+        
+        .recordrtc,
+        .recordrtc .header {
+            display: block;
+            text-align: center;
+            padding-top: 0;
+        }
+        
+        .recordrtc video {
+            width: 70%;
+        }
+        
+        .recordrtc option[disabled] {
+            display: none;
+        }
+        /* place fullscreen control on right side of the player */
+        
+        .video-js .vjs-control.vjs-fullscreen-control {
+            position: absolute;
+            right: 0;
+        }
+        /* make sure the custom controls are always visible because
+		   the plugin hides and replace the video.js native mobile
+		   controls */
+        
+        .vjs-using-native-controls .vjs-control-bar {
+            display: flex !important;
+        }
+        /* change player background color */
+        
+        #myVideo {
+            background-color: #E8E884;
+        }
+    </style>
+    <link href="http://vjs.zencdn.net/5.16.0/video-js.css" rel="stylesheet">
+    <link href="./css/videojs.record.min.css" rel="stylesheet">
+    <script src="https://vjs.zencdn.net/5.9.2/video.min.js"></script>
+    <script src="https://cdn.webrtc-experiment.com/RecordRTC.js"></script>
+    <script src="https://cdn.webrtc-experiment.com/gif-recorder.js"></script>
+    <script src="https://cdn.webrtc-experiment.com/getScreenId.js"></script>
+    <script src="./js/jquery.min.js"></script>
+    <script src="./js/bootstrap.min.js"></script>
+    <script src="./js/videojs.record.min.js"></script>
+    <!-- for Edige/FF/Chrome/Opera/etc. getUserMedia support -->
+    <script src="https://cdn.webrtc-experiment.com/gumadapter.js"></script>
+
+</head>
+
+<body>
+    <header class="navbar navbar-inverse">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-responsive-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/" title="MC-Suite Operator Interface">Operator Interface</a>
+            </div>
+            <div class="navbar-collapse collapse navbar-responsive-collapse">
+                <ul class="nav navbar-nav navbar-right">
+
+                    <li><a href="./owncloud/">File repository</a></li>
+                    <li><a href="">Monitoring Dashboard</a></li>
+
+                    <li class="dropdown">
+                        <a href="#" data-target="#" class="dropdown-toggle" data-toggle="dropdown" id="user">User <b class="caret"></b></a>
+                        <ul class="dropdown-menu menu-right">
+                            <li><a href="#">My Account</a></li>
+                            <li><a href="#" id="logout">Logout</a></li>
+                        </ul>
+                    </li>
+
+
+
+                </ul>
+            </div>
+            <div></div>
+        </div>
+    </header>
+
+
+    <div class="span4 offset4" id="alert-div" style="position:fixed;width:40%;margin-top:10px;z-index:100000"></div>
+
+    <div id="body" class="container-fluid">
+        <!-- Example row of columns -->
+        <div class="row">
+            <div class="col-md-4">
+                <div class="jumbotron">
+                    <h2>Publish an observation: </h2>
+
+
+
+                    <div class="form-group">
+                        <div class="input-group" id="timeperiod">
+                            <b style="font-size:14px">From : </b>
+                            <input name="from" type="text" class="input-medium search-query" placeholder="yyyy-MM-ddTHH:mm:ss" rel="tooltip" title="or timestamp ; or 'now'"></input>
+                            <br/>
+                            <b style="font-size:14px">To : </b>
+                            <input name="to" type="text" class="input-medium search-query" placeholder="yyyy-MM-ddTHH:mm:ss" rel="tooltip" title="or timestamp ; or 'now'"></input>
+                            &nbsp;
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label">Importance Level:</label>
+                        <div class="btn-group" data-toggle="buttons">
+                            <label class="btn btn-success">
+                                <input name="level" type="radio" value="Low" /> Low
+                            </label>
+                            <label class="btn btn-warning">
+                                <input name="level" type="radio" value="Moderate" /> Moderate
+                            </label>
+                            <label class="btn btn-danger">
+                                <input name="level" type="radio" value="High" /> High
+                            </label>
+                        </div>
+                    </div>
+
+
+                    <br/>
+
+                    <div class="form-group">
+                        <label class="control-label">Occasion:</label>
+                        <div class="btn-group" data-toggle="buttons">
+                            <label class="btn btn-default">
+                                <input name="occasion" type="radio" value="Planned" /> Planned
+                            </label>
+                            <label class="btn btn-default">
+                                <input name="occasion" type="radio" value="Not Planned" /> Not Planned
+                            </label>
+                        </div>
+                    </div>
+
+                    <br/>
+
+                    <div class="form-group">
+                        <div class="input-group" id="comments">
+                            <label class="control-label">Comment:</label>
+                        </div>
+                    </div>
+
+
+                    <button id="btn-send" class="btn btn-primary">Send!</button>
+                    <button id="btn-file" class="btn btn-primary">Create file</button>
+
+                </div>
+            </div>
+            <div class="col-md-8">
+                <ul class="nav nav-tabs">
+                    <li class="active"><a data-toggle="tab" href="#sound">Message recording</a></li>
+                    <li><a data-toggle="tab" href="#camera">Workspace Camera</a></li>
+                    <li><a data-toggle="tab" href="#chat">Live Chat</a></li>
+                </ul>
+                <div class="tab-content">
+                    <div id="chat" class="tab-pane fade">
+                        <p>
+                            <div class="embed-responsive embed-responsive-16by9">
+                                <iframe class="embed-responsive-item" src="https://54.195.19.23/"></iframe>
+                            </div>
+                        </p>
+                    </div>
+                    <div id="camera" class="tab-pane fade">
+                        <p>
+                            <div>
+                                <button id="btn-recordingCam" class="btn btn-primary" onclick="startRecording();">Start record &nbsp;<span class="glyphicon glyphicon-record" aria-hidden="true"></span></button>
+                                <br/>
+                            </div>
+                            <div class="embed-responsive embed-responsive-16by9">
+                                <iframe class="embed-responsive-item" src="https://ip-kamera01-ideko.danobatgroup.com/"></iframe>
+                            </div>
+                        </p>
+                    </div>
+                    <div id="sound" class="tab-pane fade in active">
+                        <p>
+                            <div>
+                                <video id="myVideo" class="video-js vjs-default-skin"></video>
+                            </div>
+                            <script src="./js/videomessage.js"></script>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <hr>
+
+    </div>
+    <!-- /container -->
+
+    <footer class="navbar navbar-inverse" role="navigation">
+        <nav class="container-fluid">
+            <div class="navbar-header">
+                <button class="navbar-toggle" data-toggle="collapse" data-target=".navFooterCollapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div>
+            <div class="navbar-collapse collapse navbar-responsive-collapse">
+                <ul class="nav navbar-nav navbar-left">
+                    <li><a href="/documentation/">Documentation</a></li>
+                    <li><a href="/api/">API</a></li>
+                    <li><a href="/faq/">FAQ</a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="/terms-of-use/">Terms of use</a></li>
+                    <li><a href="/privacy-policy/">Privacy policy</a></li>
+                    <li><a href="/cookie-policy/">Cookie policy</a></li>
+                    <li><a href="/contact/">Contact</a></li>
+                    <li><a href="/feedback/"><i class="mdi-communication-messenger"></i>Feedback</a></li>
+                </ul>
+            </div>
+        </nav>
+    </footer>
+
+    <script src="./js/publishobservation.js"></script>
+    <script src="./js/videoworkspace.js"></script>
+    <script>
+        function autoLogout() {
+            $.ajax({
+                url: "http://54.75.18.26:5984/_session",
+                xhrFields: {
+                    withCredentials: true,
+                },
+                type: "GET",
+                dataType: 'json',
+                complete: function (data, textStatus, jqXHR) {
+                    console.log(JSON.stringify(data));
+                    var c = JSON.parse(data.responseText);
+                    console.log();
+                    if (c.userCtx.name == null) {
+                        window.location.replace("./index.html");
+                    } else {
+                        $("#user").html(c.userCtx.name + "<b class='caret'></b>");
+                    }
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.log(textStatus + ' :: ' + errorThrown + ' :: ' + JSON.stringify(jqXHR));
+                }
+            });
+        }
+
+
+        function logout() {
+            $.ajax({
+                url: "http://54.75.18.26:5984/_session",
+                xhrFields: {
+                    withCredentials: true,
+                },
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader('Authorization', "Basic " + btoa("test:test"));
+                },
+                type: "DELETE",
+                dataType: 'json',
+                contentType: "application/json",
+                complete: function (data, textStatus, jqXHR) {
+                    console.log(JSON.stringify(data));
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.log(textStatus + ' :: ' + errorThrown + ' :: ' + JSON.stringify(jqXHR));
+                }
+            });
+        }
+
+
+
+
+        $("#logout").click(function () {
+            logout();
+            window.location.replace("./index.html");
+        });
+
+        $(document).ready(function () {
+            autoLogout();
+        });
+    </script>
+</body>
+
+</html>
