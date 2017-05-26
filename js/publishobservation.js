@@ -16,9 +16,9 @@ if (sessionStorage.getItem('comments')) {
 $("#btn-send").click(function () {
     var comment = {};
     var tab = document.cookie.split("=");
+    comment._id = (new Date).getTime() + "";
     comment.owner = tab[1];
     comment.timestamp = new Date().toLocaleString();
-    comment.val = $('input[name="optionsRadios"]:checked').val();
     comment.level = $('input[name="level"]:checked').val();
     comment.from = $('input[name="from"]').val();
     comment.to = $('input[name="to"]').val();
@@ -26,6 +26,11 @@ $("#btn-send").click(function () {
         comment.occasion = $('#freeComment').val();
     } else {
         comment.occasion = $('input[name="occasion"]:checked').val();
+    }
+    if ($('input[name="optionsRadios"]:checked').val() === "o") {
+        comment.val = $('#freeComment').val();
+    } else {
+        comment.val = $('input[name="optionsRadios"]:checked').val();
     }
     comments.push(comment);
     var stringified = JSON.stringify(comments);
