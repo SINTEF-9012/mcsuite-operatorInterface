@@ -27,10 +27,16 @@ player.on('finishRecord', function () {
     // can be downloaded by the user, stored on server etc.
     //var u = URL.createObjectURL(player.recordedData);
     //invokeSaveAsDialog(player.recordedData, "test.webm");
-    uploadBlob(player.recordedData, "test.webm");
+    var time = new Date().getTime();
+    var isChrome = !!window.chrome && !!window.chrome.webstore;
+    if (isChrome) {
+        uploadBlob(player.recordedData.video, time + ".webm", time);
+    } else {
+        uploadBlob(player.recordedData, time + ".webm", time);
+    }
 });
 
-function uploadBlob(file, fileName) {
+function uploadBlob(file, fileName, time) {
     if (!file) {
         throw 'Blob object is required.';
     }
@@ -45,7 +51,7 @@ function uploadBlob(file, fileName) {
         fileExtension = splitted[1];
     }
     var fileFullName = (fileName || (Math.round(Math.random() * 9999999999) + 888888888)) + '.' + fileExtension;
-
+    informVideoIsRecorded(fileFullName, time);
     var formData = new FormData();
     formData.append(file.type + '-filename', fileFullName);
     formData.append(file.type + '-blob', file);
@@ -54,8 +60,8 @@ function uploadBlob(file, fileName) {
         if (progress !== 'upload-ended') {
             return;
         }
-        var initialURL = "https://54.74.232.50/upload.php"
-        callback('ended', initialURL);
+        //var initialURL = "https://54.74.232.50/upload.php"
+        //callback('ended', initialURL);
 
     });
 }
@@ -90,6 +96,7 @@ function makeXMLHttpRequest(url, data, callback) {
     request.open('POST', url);
     request.send(data);
 }
+
 
 function invokeSaveAsDialog(file, fileName) {
     if (!file) {
@@ -137,4 +144,31 @@ function invokeSaveAsDialog(file, fileName) {
         URL.revokeObjectURL(hyperlink.href);
     }
 
+}
+
+function storeComment(comment) {
+    $.ajax({
+        url: "http://54.75.18.26:5984/operatorcomments",
+        xhrFields: {
+            withCredentials: true,
+        },
+        type: "POST",
+        dataType: 'json',
+        contentType: "application/json",
+        data: JSON.stringify(comment),
+        complete: function (data, textStatus, jqXHR) {
+            console.log(JSON.stringify(data));
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.log(textStatus + ' :: ' + errorThrown + ' :: ' + JSON.stringify(jqXHR));
+        }
+    });
+}
+
+function informVideoIsRecorded(fullName, time) {
+    var comment = {};
+    comment._id = time + "";
+    comment.timestamp = new Date().toLocaleString();
+    comment.val = fullName;
+    storeComment(comment);
 }
