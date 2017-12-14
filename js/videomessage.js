@@ -6,7 +6,7 @@ var player = videojs("myVideo", {
         record: {
             audio: true,
             video: true,
-            maxLength: 240,
+            maxLength: 120,
             debug: true
         }
     }
@@ -28,11 +28,18 @@ player.on('finishRecord', function () {
     //var u = URL.createObjectURL(player.recordedData);
     //invokeSaveAsDialog(player.recordedData, "test.webm");
     var time = new Date().getTime();
+    var ua = navigator.userAgent.toLowerCase();
+    var isAndroid = ua.indexOf("android") > -1;
     var isChrome = !!window.chrome && !!window.chrome.webstore;
-    if (isChrome) {
+    if (isAndroid) {
         uploadBlob(player.recordedData.video, time + ".webm", time);
     } else {
-        uploadBlob(player.recordedData, time + ".webm", time);
+        if (isChrome) {
+            console.log("chrome");
+            uploadBlob(player.recordedData.video, time + ".webm", time);
+        } else {
+            uploadBlob(player.recordedData, time + ".webm", time);
+        }
     }
 });
 
@@ -60,9 +67,6 @@ function uploadBlob(file, fileName, time) {
         if (progress !== 'upload-ended') {
             return;
         }
-        //var initialURL = "https://54.74.232.50/upload.php"
-        //callback('ended', initialURL);
-
     });
 }
 
@@ -71,19 +75,21 @@ function makeXMLHttpRequest(url, data, callback) {
     request.onreadystatechange = function () {
         if (request.readyState == 4 && request.status == 200) {
             callback('upload-ended');
+            location.reload();
         }
     };
     request.upload.onloadstart = function () {
         callback('Upload started...');
     };
     request.upload.onprogress = function (event) {
-        callback('Upload Progress ' + Math.round(event.loaded / event.total * 100) + "%");
+        $(".progress-bar").css("width", Math.round(event.loaded / event.total * 100) + "%");
+        console.log('Upload Progress ' + Math.round(event.loaded / event.total * 100) + "%");
     };
     request.upload.onload = function () {
         callback('progress-about-to-end');
     };
     request.upload.onload = function () {
-        callback('progress-ended');
+        $(".progress-bar").css("width", "0%");
     };
     request.upload.onerror = function (error) {
         callback('Failed to upload to server');
@@ -146,9 +152,18 @@ function invokeSaveAsDialog(file, fileName) {
 
 }
 
+function informVideoIsRecorded(fullName, time) {
+    var comment = {};
+    comment.username = username;
+    comment._id = time + "";
+    comment.timestamp = new Date().toISOString();
+    comment.val = fullName;
+    storeComment(comment);
+}
+
 function storeComment(comment) {
     $.ajax({
-        url: "http://54.75.18.26:5984/operatorcomments",
+        url: "https://54.75.18.26/operatorcomments",
         xhrFields: {
             withCredentials: true,
         },
@@ -161,14 +176,7 @@ function storeComment(comment) {
         },
         error: function (jqXHR, textStatus, errorThrown) {
             console.log(textStatus + ' :: ' + errorThrown + ' :: ' + JSON.stringify(jqXHR));
+            alertMessage('error', 'Failed to upload observation', 2000);
         }
     });
-}
-
-function informVideoIsRecorded(fullName, time) {
-    var comment = {};
-    comment._id = time + "";
-    comment.timestamp = new Date().toLocaleString();
-    comment.val = fullName;
-    storeComment(comment);
 }
